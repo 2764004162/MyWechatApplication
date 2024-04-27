@@ -58,4 +58,33 @@ async function bootstrap() {
   });
 }
 
+// 创建用户
+app.post("/api/users", async (req, res) => {
+  try {
+    const newUser = await User.create(req.body);
+    res.status(201).json(newUser);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+// 获取特定user_id的用户信息
+app.get("/api/users/:user_id", async (req, res) => {
+  try {
+    const userId = parseInt(req.params.user_id, 10);
+    const user = await User.findByPk(userId, {
+      attributes: ["nickname", "imgurl", "star", "head_deco", "body_deco", "eye_deco"],
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 bootstrap();
