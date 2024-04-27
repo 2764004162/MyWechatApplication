@@ -86,5 +86,4 @@ app.get("/api/users/:user_id", async (req, res) => {
   }
 });
 
-
 bootstrap();
